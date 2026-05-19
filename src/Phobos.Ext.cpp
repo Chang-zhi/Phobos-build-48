@@ -40,6 +40,9 @@
 #include <New/Entity/BannerClass.h>
 #include <New/Type/SelectBoxTypeClass.h>
 
+// My New
+#include <MyNew/WaypointLabelClass.h>
+
 #include <utility>
 
 #pragma region Implementation details
@@ -242,7 +245,11 @@ using PhobosTypeRegistry = TypeRegistry <
 	AttachEffectTypeClass,
 	AttachEffectClass,
 	NewSWType,
-	SelectBoxTypeClass
+	SelectBoxTypeClass,
+
+	// My New Classes
+	WaypointLabelClass
+
 	// other classes
 > ;
 

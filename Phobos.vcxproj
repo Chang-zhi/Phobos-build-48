@@ -26,6 +26,8 @@
     <ClCompile Include="src\Ext\EBolt\Body.cpp" />
     <ClCompile Include="src\Ext\EBolt\Hooks.cpp" />
     <ClCompile Include="src\Ext\Unit\Hooks.SimpleDeployer.cpp" />
+    <ClCompile Include="src\MyNew\Hooks.WaypointLabelClass.cpp" />
+    <ClCompile Include="src\MyNew\WaypointLabelClass.cpp" />
     <ClCompile Include="src\New\Type\Affiliated\CreateUnitTypeClass.cpp" />
     <ClCompile Include="src\Blowfish\blowfish.cpp" />
     <ClCompile Include="src\Blowfish\Hooks.Blowfish.cpp" />
@@ -214,6 +216,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Ext\EBolt\Body.h" />
+    <ClInclude Include="src\MyNew\WaypointLabelClass.h" />
     <ClInclude Include="src\New\Type\Affiliated\CreateUnitTypeClass.h" />
     <ClInclude Include="src\Blowfish\blowfish.h" />
     <ClInclude Include="src\Ext\Cell\Body.h" />
