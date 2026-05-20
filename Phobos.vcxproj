@@ -21,6 +21,7 @@
     <ClCompile Include="src\Ext\Infantry\Hooks.cpp" />
     <ClCompile Include="src\Ext\Infantry\Hooks.Firing.cpp" />
     <ClCompile Include="src\Ext\TechnoType\Hooks.MultiWeapon.cpp" />
+    <ClCompile Include="src\Ext\Techno\Hooks.TargetEvaluation.cpp" />
     <ClCompile Include="src\Ext\Techno\Hooks.Targeting.cpp" />
     <ClCompile Include="src\Ext\Unit\Hooks.Firing.cpp" />
     <ClCompile Include="src\Ext\EBolt\Body.cpp" />
@@ -155,7 +156,6 @@
     <ClCompile Include="src\Ext\Techno\Hooks.Misc.cpp" />
     <ClCompile Include="src\Ext\Techno\Hooks.Firing.cpp" />
     <ClCompile Include="src\Ext\Techno\Hooks.ReceiveDamage.cpp" />
-    <ClCompile Include="src\Ext\Techno\Hooks.TargetEvaluation.cpp" />
     <ClCompile Include="src\Ext\Techno\Hooks.Transport.cpp" />
     <ClCompile Include="src\Ext\TerrainType\Body.cpp" />
     <ClCompile Include="src\Ext\TerrainType\Hooks.cpp" />
