@@ -191,6 +191,9 @@ public:
 		void ResetDelayedFireTimer();
 		void UpdateTintValues();
 
+		// My New
+		void UpdateTemporalExclusive();
+
 		virtual ~ExtData() override;
 		virtual void InvalidatePointer(void* ptr, bool bRemoved) override;
 		virtual void LoadFromStream(PhobosStreamReader& Stm) override;

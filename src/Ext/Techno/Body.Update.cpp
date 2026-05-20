@@ -15,10 +15,13 @@
 #include <Ext/Bullet/Body.h>
 #include <Ext/House/Body.h>
 #include <Ext/WeaponType/Body.h>
+#include <Ext/WarheadType/Body.h>
 #include <Ext/Scenario/Body.h>
 #include <Utilities/EnumFunctions.h>
 #include <Utilities/AresFunctions.h>
 
+#include <set>
+#include <vector>
 
 // TechnoClass_AI_0x6F9E50
 // It's not recommended to do anything more here it could have a better place for performance consideration
@@ -1663,6 +1666,9 @@ void TechnoExt::ExtData::UpdateTemporal()
 		ae->AI_Temporal();
 
 	this->UpdateRearmInTemporal();
+	// My New
+	this->UpdateTemporalExclusive();
+	// End
 }
 
 void TechnoExt::ExtData::UpdateRearmInEMPState()
@@ -2088,4 +2094,66 @@ void TechnoExt::ExtData::UpdateTintValues()
 		auto const pShieldType = this->Shield->GetType();
 		calculateTint(Drawing::RGB_To_Int(pShieldType->Tint_Color), static_cast<int>(pShieldType->Tint_Intensity * 1000), pShieldType->Tint_VisibleToHouses);
 	}
+}
+
+// My New
+// safe check to prevent TemporalClass intance(Exclusive) attack muilt target, but may be not nessesary.
+void TechnoExt::ExtData::UpdateTemporalExclusive()
+{
+    auto& array = TemporalClass::Array;
+    int count = array.Count;
+
+    if (count <= 1) return;
+
+    std::map<TechnoClass*, TemporalClass*> lockedTargets;
+    std::vector<TemporalClass*> toRelease;
+
+    for (int i = 0; i < count; ++i)
+    {
+        TemporalClass* pCurrent = array.Items[i];
+
+        if (!pCurrent || !pCurrent->Target) continue;
+
+        TechnoClass* pTarget = pCurrent->Target;
+
+        bool isCurrentExclusive = false;
+        if (pCurrent->Owner)
+        {
+			// only get 3 times
+            for (int w = 0; w < 3; ++w)
+            {
+                WeaponStruct* pWeapon = pCurrent->Owner->GetWeapon(w);
+                if (!pWeapon || !pWeapon->WeaponType) continue;
+                WarheadTypeClass* pWarhead = pWeapon->WeaponType->Warhead;
+                if (!pWarhead || !pWarhead->Temporal) continue;
+                auto pWHExt = WarheadTypeExt::ExtMap.Find(pWarhead);
+                if (pWHExt && pWHExt->TemporalExclusive)
+                {
+                    isCurrentExclusive = true;
+                    break;
+                }
+            }
+        }
+
+        if (!isCurrentExclusive) continue;
+
+        auto it = lockedTargets.find(pTarget);
+        if (it == lockedTargets.end())
+        {
+            lockedTargets[pTarget] = pCurrent;
+        }
+        else
+        {
+            toRelease.push_back(pCurrent);
+        }
+    }
+
+    // Release the conflicting instances
+    for (auto pInst : toRelease)
+    {
+        if (pInst)
+        {
+            pInst->JustLetGo(); 
+        }
+    }
 }

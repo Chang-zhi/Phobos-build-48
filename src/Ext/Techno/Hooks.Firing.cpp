@@ -277,6 +277,20 @@ DEFINE_HOOK(0x6FC339, TechnoClass_CanFire, 0x6)
 	const auto pWHExt = WarheadTypeExt::ExtMap.Find(pWH);
 	const int nMoney = pWHExt->TransactMoney;
 
+	// My New
+	// let temporal exclusive techniques work only for one target at a time
+	if (pWH && pWH->Temporal)
+	{
+		if (pWHExt->TemporalExclusive && pTargetTechno)
+		{
+			if (pTargetTechno->TemporalTargetingMe) 
+			{
+				return CannotFire;
+			}
+		}
+	}
+	// End
+
 	if (nMoney < 0 && pThis->Owner->Available_Money() < -nMoney)
 		return CannotFire;
 
@@ -335,9 +349,9 @@ DEFINE_HOOK(0x6FC339, TechnoClass_CanFire, 0x6)
 			if (!TechnoExt::ExtMap.Find(pTargetTechno)->TypeExtData->AllowAirstrike.Get(pTargetTechno->AbstractFlags & AbstractFlags::Foot ? true : static_cast<BuildingClass*>(pTargetTechno)->Type->CanC4))
 				return CannotFire;
 		}
-	}
-
-	return 0;
+    }
+    
+    return 0;
 }
 
 DEFINE_HOOK(0x6FC0C5, TechnoClass_CanFire_DisableWeapons, 0x6)

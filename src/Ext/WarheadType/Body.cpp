@@ -287,6 +287,10 @@ void WarheadTypeExt::ExtData::LoadFromINIFile(CCINIClass* const pINI)
 	this->AffectsNeutral.Read(exINI, pSection, "AffectsNeutral");
 	this->HealthCheck = this->AffectsBelowPercent > 0.0 || this->AffectsAbovePercent < 1.0;
 
+	// My New
+	this->TemporalExclusive.Read(exINI, pSection, "TemporalExclusive");
+	// End
+
 	if (this->AffectsAbovePercent > this->AffectsBelowPercent)
 		Debug::Log("[Developer warning][%s] AffectsAbovePercent is bigger than AffectsBelowPercent, the warhead will never activate!\n", pSection);
 
@@ -564,6 +568,10 @@ void WarheadTypeExt::ExtData::Serialize(T& Stm)
 		.Process(this->CanKill)
 
 		.Process(this->ReverseEngineer)
+
+		// My New
+        .Process(this->TemporalExclusive)
+		// End
 
 		// Ares tags
 		.Process(this->AffectsEnemies)

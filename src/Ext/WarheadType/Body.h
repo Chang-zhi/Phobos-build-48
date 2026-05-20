@@ -202,6 +202,10 @@ public:
 		Valueable<bool> EffectsRequireVerses;
 		Valueable<bool> Malicious;
 
+		// My New
+		Valueable<bool> TemporalExclusive;
+		// End
+
 		double Crit_RandomBuffer;
 		double Crit_CurrentChance;
 		bool Crit_Active;
@@ -387,6 +391,8 @@ public:
 			, AffectsOwner {}
 			, EffectsRequireVerses { true }
 			, Malicious { true }
+
+			, TemporalExclusive { false }
 
 			, Crit_RandomBuffer { 0.0 }
 			, Crit_CurrentChance { 0.0 }
