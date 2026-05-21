@@ -278,7 +278,7 @@ DEFINE_HOOK(0x6FC339, TechnoClass_CanFire, 0x6)
 	const int nMoney = pWHExt->TransactMoney;
 
 	// My New
-	// let temporal exclusive techniques work only for one target at a time
+	// let temporal exclusive tech instance can't fire unit that be targeted by temporal
 	if (pWH && pWH->Temporal)
 	{
 		if (pWHExt->TemporalExclusive && pTargetTechno)
