@@ -8,7 +8,7 @@
 #include <map>
 
 // Check if a unit has an exclusive temporal weapon
-bool CurrentUseExclusiveTemporalWeapon(TechnoClass* pTechno)
+bool IsCurrentUseExclusiveTemporalWeapon(TechnoClass* pTechno)
 {
     if (!pTechno) return false;
 
@@ -58,7 +58,7 @@ void CleanupInvalidTemporalLocks()
         }
 		// 4. 检查攻击者是否仍然拥有"独占超时空"武器
         // 如果它切换了武器，或者被卸下了武器，应该释放占用
-        else if (!CurrentUseExclusiveTemporalWeapon(pAttacker))
+        else if (!IsCurrentUseExclusiveTemporalWeapon(pAttacker))
         {
             isValid = false;
         }
@@ -81,7 +81,7 @@ void HandleTemporalExclusiveTargeting(TechnoClass* pThis)
     CleanupInvalidTemporalLocks();
 
     // 2. 如果当前单位没有独占武器，直接返回
-    if (!CurrentUseExclusiveTemporalWeapon(pThis))
+    if (!IsCurrentUseExclusiveTemporalWeapon(pThis))
     {
         return;
     }
@@ -124,7 +124,7 @@ void HandleTemporalExclusiveTargeting(TechnoClass* pThis)
         {
             // 双重检查：确保占用者真的还在攻击这个目标（防止竞态条件）
             if (abstract_cast<TechnoClass*>(pOccupier->Target) == pCurrentTarget && 
-                CurrentUseExclusiveTemporalWeapon(pOccupier))
+                IsCurrentUseExclusiveTemporalWeapon(pOccupier))
             {
                 // 确实发生冲突，强制当前单位放弃
                 Debug::Log("Temporal Conflict: Unit %X forced to drop target %X (Occupied by %X)", pThis, pCurrentTarget, pOccupier);
@@ -142,6 +142,7 @@ void HandleTemporalExclusiveTargeting(TechnoClass* pThis)
 }
 
 // 更新新互斥超时空武器的独占逻辑
+// 如果TemporalExclusive的实例已经多对一攻击, 保留一个实例, 其他全部放弃
 void UpdateTemporalExclusive()
 {
 	auto& array = TemporalClass::Array;
@@ -161,7 +162,7 @@ void UpdateTemporalExclusive()
 		TechnoClass* pTarget = pCurrent->Target;
 
 		// 2. 如果当前单位没有独占武器，直接返回
-		if (!CurrentUseExclusiveTemporalWeapon(pCurrent->Owner))
+		if (!IsCurrentUseExclusiveTemporalWeapon(pCurrent->Owner))
 		{
 			return;
 		}

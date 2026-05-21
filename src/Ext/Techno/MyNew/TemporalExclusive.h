@@ -1,17 +1,14 @@
 #pragma once
 
-#include <TechnoClass.h>
-
-#include <Ext/Techno/body.h>
-#include <Ext/WarheadType/body.h>
-
 #include <map>
+
+class TechnoClass;
 
 // Key: 目标 (TechnoClass*), Value: 攻击者 (TechnoClass*)
 static std::map<TechnoClass*, TechnoClass*> TemporalExclusiveTargetsMap;
 
 // Helper: Check if a unit has an exclusive temporal weapon
-bool CurrentUseExclusiveTemporalWeapon(TechnoClass* pTechno);
+bool IsCurrentUseExclusiveTemporalWeapon(TechnoClass* pTechno);
 
 // Helper：清理映射中所有无效的占用记录
 void CleanupInvalidTemporalLocks();
