@@ -19,83 +19,8 @@
 #include <Utilities/AresHelper.h>
 #include <Utilities/AresFunctions.h>
 
-#include <map>
-
-// Key: Target (TechnoClass*), Value: Attacker (TechnoClass*)
-static std::map<TechnoClass*, TechnoClass*> TemporalExclusiveTargetsMap;
-
-// Check if a unit has an exclusive temporal weapon (Only for Primary Weapon)
-// Because that will change selected logic of Unit
-bool HasExclusiveTemporalWeapon(TechnoClass* pTechno)
-{
-    if (!pTechno) return false;
-
-    WeaponStruct* pPrimaryWeapon = pTechno->GetPrimaryWeapon();
-
-    if (pPrimaryWeapon && pPrimaryWeapon->WeaponType && pPrimaryWeapon->WeaponType->Warhead)
-    {
-        if (pPrimaryWeapon->WeaponType->Warhead->Temporal)
-        {
-            auto pWHExt = WarheadTypeExt::ExtMap.Find(pPrimaryWeapon->WeaponType->Warhead);
-            if (pWHExt && pWHExt->TemporalExclusive)
-            {
-                return true;
-            }
-        }
-    }
-
-    return false;
-}
-
-// 处理互斥超时空武器的目标独占逻辑
-void HandleTemporalExclusiveTargeting(TechnoClass* pThis)
-{
-    if (!HasExclusiveTemporalWeapon(pThis))
-        return;
-
-    TechnoClass* pCurrentTarget = abstract_cast<TechnoClass*>(pThis->Target);
-
-    // 情况 1: 当前单位没有目标
-    if (!pCurrentTarget)
-    {
-        // 清理映射中所有由该单位占用的记录
-        for (auto it = TemporalExclusiveTargetsMap.begin(); it != TemporalExclusiveTargetsMap.end(); )
-        {
-            if (it->second == pThis)
-            {
-                it = TemporalExclusiveTargetsMap.erase(it);
-            }
-            else
-            {
-                ++it;
-            }
-        }
-    }
-    // 情况 2: 当前单位有目标
-    else
-    {
-        auto it = TemporalExclusiveTargetsMap.find(pCurrentTarget);
-
-        // 子情况 A: 目标未被任何人占用 -> 声明占用
-        if (it == TemporalExclusiveTargetsMap.end())
-        {
-            TemporalExclusiveTargetsMap[pCurrentTarget] = pThis;
-        }
-        // 子情况 B: 目标已被占用
-        else
-        {
-            TechnoClass* pOccupier = it->second;
-
-            // 如果占用者不是我自己 -> 强制放弃目标以解决冲突
-            if (pOccupier != pThis)
-            {
-                Debug::Log("Temporal Conflict: Unit %X forced to drop target %X (Occupied by %X)", pThis, pCurrentTarget, pOccupier);
-                pThis->SetTarget(nullptr);
-            }
-			// if Occupier is self -> Keep the status
-        }
-    }
-}
+// My New
+#include <Ext/Techno/MyNew/TemporalExclusive.h>
 
 #pragma region GetTechnoType
 

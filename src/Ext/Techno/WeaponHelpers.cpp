@@ -439,6 +439,12 @@ bool TechnoExt::MultiWeaponCanFire(TechnoClass* const pThis, AbstractClass* cons
 		if (!pWH->Temporal && pTechno->BeingWarpedOut)
 			return false;
 
+		// My New
+		const auto& pWHExt = WarheadTypeExt::ExtMap.Find(pWH);
+		if (pWH->Temporal && pWHExt->TemporalExclusive && pTechno->TemporalTargetingMe)
+			return false;
+		// End
+
 		if (pWH->Parasite
 			&& (isBuilding || static_cast<FootClass*>(pTechno)->ParasiteEatingMe))
 		{
