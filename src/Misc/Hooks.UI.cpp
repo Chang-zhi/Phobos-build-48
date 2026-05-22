@@ -233,12 +233,10 @@ DEFINE_HOOK(0x6D4684, TacticalClass_Draw_FlyingStrings, 0x6)
 	FlyingStrings::UpdateAll();
 
 	// My New: Waypoint Labels
-	if (ScenarioClass::Instance && SessionClass::Instance.CurrentlyInGame)
+	// 由于并不会反编译知识, 暂时在现成的Hook里面添加, 能用就行:)
+	for (const auto& pLabel : WaypointLabelClass::Array)
 	{
-		for (const auto& pLabel : WaypointLabelClass::Array)
-		{
-			if (pLabel) pLabel->Draw();
-		}
+		if (pLabel) pLabel->Draw();
 	}
 	// End
 
