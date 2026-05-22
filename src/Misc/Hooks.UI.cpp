@@ -17,6 +17,10 @@
 #include <New/Entity/BannerClass.h>
 #include <New/Type/BannerTypeClass.h>
 
+// My New
+#include <MyNew/WaypointLabelClass.h>
+// End
+
 #include <Utilities/Debug.h>
 
 DEFINE_HOOK(0x777C41, UI_ApplyAppIcon, 0x9)
@@ -227,6 +231,17 @@ DEFINE_HOOK(0x6A8463, StripClass_OperatorLessThan_CameoPriority, 0x5)
 DEFINE_HOOK(0x6D4684, TacticalClass_Draw_FlyingStrings, 0x6)
 {
 	FlyingStrings::UpdateAll();
+
+	// My New: Waypoint Labels
+	if (ScenarioClass::Instance && SessionClass::Instance.CurrentlyInGame)
+	{
+		for (const auto& pLabel : WaypointLabelClass::Array)
+		{
+			if (pLabel) pLabel->Draw();
+		}
+	}
+	// End
+
 	return 0;
 }
 

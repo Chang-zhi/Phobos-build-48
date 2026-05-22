@@ -28,7 +28,6 @@
     <ClCompile Include="src\Ext\EBolt\Body.cpp" />
     <ClCompile Include="src\Ext\EBolt\Hooks.cpp" />
     <ClCompile Include="src\Ext\Unit\Hooks.SimpleDeployer.cpp" />
-    <ClCompile Include="src\MyNew\Hooks.WaypointLabelClass.cpp" />
     <ClCompile Include="src\MyNew\WaypointLabelClass.cpp" />
     <ClCompile Include="src\New\Type\Affiliated\CreateUnitTypeClass.cpp" />
     <ClCompile Include="src\Blowfish\blowfish.cpp" />
